@@ -1,2 +1,2 @@
 # hook-em-hardware-fe
-Hook'em Hradware is one stop hardware shop
+Hook'em Hardware is one stop hardware shop
