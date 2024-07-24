@@ -5,17 +5,16 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h4></h4>
-        <img src={logo} className="App-logo" alt="logo" /> 
+        <img src={logo} className="App-logo" alt="logo"/>
         <h2>
           Hook'Em Hardware
         </h2>
       </header>
-      <body className="App-body">
+      <div className="App-body">
         <h3>
           stuff
         </h3>
-      </body>
+      </div>
     </div>
   );
 }
