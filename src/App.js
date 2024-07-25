@@ -1,5 +1,5 @@
-import logo from './cow.jpg';
-import './App.css';
+import logo from './cow.jpg'
+import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import Login from './components/login'
