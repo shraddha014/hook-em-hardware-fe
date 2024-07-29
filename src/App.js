@@ -2,10 +2,16 @@ import logo from './cow.jpg';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import SelectExistingProject from './selectExistingProject'
 
 function App() {
   const onButtonClick = () => {
     // You'll update this function later
+    return (
+      <div className="App">
+        <SelectExistingProject />
+      </div>
+    );
   }
 
   return (
@@ -19,7 +25,7 @@ function App() {
       <div className="App-body">
         <BrowserRouter>
           <Routes>
-            {/* <Route path="/" element={<use your page link/>} /> */}
+            <Route path="/project-list" element={<SelectExistingProject/>} />
           </Routes>
         </BrowserRouter>
       </div>
