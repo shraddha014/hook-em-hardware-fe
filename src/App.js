@@ -1,7 +1,8 @@
-import logo from './cow.jpg';
-import './App.css';
+import logo from './cow.jpg'
+import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import Login from './components/login'
 
 function App() {
   const onButtonClick = () => {
@@ -19,7 +20,7 @@ function App() {
       <div className="App-body">
         <BrowserRouter>
           <Routes>
-            {/* <Route path="/" element={<use your page link/>} /> */}
+            <Route path="/" element={<Login/>} />
           </Routes>
         </BrowserRouter>
       </div>
