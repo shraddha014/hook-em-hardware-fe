@@ -2,12 +2,18 @@ import logo from './cow.jpg'
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import SelectExistingProject from './selectExistingProject'
 import Register from './Register.js';
 import Login from './components/login'
 
 function App() {
   const onButtonClick = () => {
     // You'll update this function later
+    return (
+      <div className="App">
+        <SelectExistingProject />
+      </div>
+    );
   }
 
   return (
@@ -21,8 +27,9 @@ function App() {
       <div className="App-body">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Register/>} />
-            <Route path="/" element={<Login/>} />
+            <Route path="/project-list" element={<SelectExistingProject/>} />
+            <Route path="/register" element={<Register/>} />
+            <Route path="/login" element={<Login/>} />
           </Routes>
         </BrowserRouter>
       </div>
