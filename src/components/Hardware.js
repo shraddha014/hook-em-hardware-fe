@@ -5,14 +5,14 @@ import Form from 'react-bootstrap/Form';
 
 function Hardware() {
 
-    // useEffect(()=>{
-    //     fetch('http://127.0.0.1:5000/hardware').then(res=>res.json()).then(data => {
-    //         console.log(data);
-    //         setFormData({
-    //             ...data
-    //         })
-    //     });
-    // },[]);
+    useEffect(()=>{
+        fetch('http://127.0.0.1:5000/hardware').then(res=>res.json()).then(data => {
+            console.log(data);
+            setFormData({
+                ...data
+            })
+        });
+    },[]);
 
     const [formData, setFormData] = useState({
         projectId: '',
