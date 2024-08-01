@@ -4,14 +4,6 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 function Hardware() {
-  // useEffect(()=>{
-  //     fetch('http://127.0.0.1:5000/hardware').then(res=>res.json()).then(data => {
-  //         console.log(data);
-  //         setFormData({
-  //             ...data
-  //         })
-  //     });
-  // },[]);
 
   const [formData, setFormData] = useState({
     projectId: '',
@@ -19,6 +11,14 @@ function Hardware() {
     availability: '',
     request: ''
   });
+    useEffect(()=>{
+        fetch('http://127.0.0.1:5000/hardware').then(res=>res.json()).then(data => {
+            console.log(data);
+            setFormData({
+                ...data
+            })
+        });
+    },[]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
