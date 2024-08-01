@@ -1,13 +1,14 @@
-import logo from './cow.jpg';
-import './App.css';
+import logo from './cow.jpg'
+import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import HomePage from './HomePage';
+import Hardware from './components/Hardware';
+import SelectExistingProject from './components/selectExistingProject.js'
+import Register from './components/Register.js';
+import Login from './components/login'
+import HomePage from './components/HomePage.js';
+import CreateNewProject from './components/CreateNewProject';
 
 function App() {
-  const onButtonClick = () => {
-    // You'll update this function later
-  }
 
   return (
     <div className="App">
@@ -20,7 +21,12 @@ function App() {
       <div className="App-body">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<HomePage/>} />
+            <Route path='/' element={<HomePage />} />
+            <Route path="/hardware" element={<Hardware/>} />
+            <Route path="/project-list" element={<SelectExistingProject/>} />
+            <Route path="/register" element={<Register/>} />
+            <Route path="/login" element={<Login/>} />
+            <Route path="/create-new-project" element={<CreateNewProject />} />
           </Routes>
         </BrowserRouter>
       </div>
