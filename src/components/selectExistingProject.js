@@ -14,18 +14,23 @@ const SelectExistingProject = () => {
 
   return (
     <header>
+      <center>
       Your Current Projects
+      </center>
+      
       <div className="button-container">
+    
         {projects.map((project) => (
           <div key={project.ProjectID}>
-            <button
-              style={{ marginRight: '3em' }}
+            <div
+              style={{ marginRight: '0em' }}
               className="project-button"
               onClick={() => navigateToProject(project.url)}
             >
               {`Project ${project.ProjectID}`}
-            </button>
-            <p>{project.Description}</p>
+              <p>{project.Description}</p>
+            </div>
+            
           </div>
         ))}
       </div>
