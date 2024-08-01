@@ -6,6 +6,7 @@ import SelectExistingProject from './components/selectExistingProject.js'
 import Register from './components/Register.js';
 import Login from './components/login'
 import HomePage from './components/HomePage.js';
+import CreateNewProject from './components/CreateNewProject';
 
 function App() {
 
@@ -20,11 +21,12 @@ function App() {
       <div className="App-body">
         <BrowserRouter>
           <Routes>
-            <Route path='/' element={HomePage} />
+            <Route path='/' element={<HomePage />} />
             <Route path="/hardware" element={<Hardware/>} />
             <Route path="/project-list" element={<SelectExistingProject/>} />
             <Route path="/register" element={<Register/>} />
             <Route path="/login" element={<Login/>} />
+            <Route path="/create-new-project" element={<CreateNewProject />} />
           </Routes>
         </BrowserRouter>
       </div>
