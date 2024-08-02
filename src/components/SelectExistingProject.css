@@ -1,24 +1,47 @@
+header {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  padding: 30px;
+}
+
 .button-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-  }
-  
-  .project-button {
-    font-size: 24px;
-    padding: 20px;
-    margin: 10px;
-    border: none;
-    background-color: #007BFF;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 200px;
-  }
-  
-  .project-button:hover {
-    background-color: #0056b3;
-  }
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.project-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  margin-bottom: 1em;
+}
+.project-button {
+  background-color: #e5731a;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px 0; 
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.project-button:hover {
+  background-color: #e69d66;
+}
+
+.project-button:active {
+  background-color: #6a2609;
+}
+
+.project-button p {
+  font-size: 14px;
+  color: #fff;
+  margin: 5px 0 0 0;
+  text-align: center;
+}
