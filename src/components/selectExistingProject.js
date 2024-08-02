@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./SelectExistingProject.css";
 const SelectExistingProject = () => {
+  const navigate = useNavigate();
+  
   //made a more dynamic array, i hope this is what you were talking aboutt
   const projects = [
     { ProjectID: 1, Description: "Project 1 Description"},
@@ -8,7 +11,7 @@ const SelectExistingProject = () => {
   ];
 
   const navigateToProject = (projectId) => {
-    window.location.href = '{ state: { username } }';
+    navigate('/hardware', { state: { projectId } });
   };
 
   return (
