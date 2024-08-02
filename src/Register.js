@@ -1,28 +1,28 @@
+
 import React from "react";
 import "./register.css";
 
 function Register() {
     return (
-        <>
+        <div className="register-container">
             <p className="title">New User Registration</p>
 
-            <form className="RegistrationBox">
-            <div>
-              <label for="Name">Name: </label>
-              <input type="text" />
-            </div>
-            <div>
-              <label for="username">Email: </label>
-              <input type="email" />
-            </div>
-            <div className="password">
-              <label for="password">Password: </label>
-              <input type="password" />
-            </div>
-            <input type={"submit"}
-              style={{ backgroundColor: "#a1eafb" }} />
+            <form className="registration-form">
+                <div className="form-group">
+                    <label htmlFor="name">Name:</label>
+                    <input id="name" type="text" placeholder="Enter your name" />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="email">Email:</label>
+                    <input id="email" type="email" placeholder="Enter your email" />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="password">Password:</label>
+                    <input id="password" type="password" placeholder="Enter your password" />
+                </div>
+                <button type="submit" className="submit-button">Register</button>
             </form>
-        </>
+        </div>
     );
 }
 
