@@ -12,17 +12,22 @@ const CreateNewProject = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log({ name, description, projectId });
-    
+  
     try {
-      const res = await axios.post("/api/auth/register", {name, description, projectId});
+      const res = await axios.post("/api/auth/register", { name, description, projectId });
       if (res.status === 200) {
         showToast("success", "Create project successful");
+        backtoExistingProject(); // Redirect on success
       } else {
         showToast("error", "There seems to be an Error");
       }
     } catch (error) {
       showToast("error", error.response?.data || "There seems to be an Error");
     }
+  };
+    
+  const backtoExistingProject = () => {
+    window.location.href = '/project-list';
   };
 
   const showToast = (type, message) => {
