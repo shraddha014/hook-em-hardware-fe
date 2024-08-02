@@ -3,12 +3,12 @@ import "./selectExistingProject.css";
 const SelectExistingProject = () => {
   //made a more dynamic array, i hope this is what you were talking aboutt
   const projects = [
-    { ProjectID: 1, Description: "Project 1 Description", url: "project1.html" },
-    { ProjectID: 2, Description: "Project 2 Description", url: "project2.html" },
+    { ProjectID: 1, Description: "Project 1 Description"},
+    { ProjectID: 2, Description: "Project 2 Description" },
   ];
 
-  const navigateToProject = (projectUrl) => {
-    window.location.href = projectUrl;
+  const navigateToProject = (projectId) => {
+    window.location.href = '{ state: { username } }';
   };
 
   return (
@@ -24,7 +24,7 @@ const SelectExistingProject = () => {
             <div
               style={{ marginRight: '0em' }}
               className="project-button"
-              onClick={() => navigateToProject(project.url)}
+              onClick={() => navigateToProject(project.ProjectID)}
             >
               {`Project ${project.ProjectID}`}
               <p>{project.Description}</p>
@@ -32,6 +32,9 @@ const SelectExistingProject = () => {
             
           </div>
         ))}
+        <p className="link">
+        <a href="/create-new-project">Create New Project</a>
+      </p>
       </div>
     </header>
   );
