@@ -1,5 +1,5 @@
 import React from "react";
-import "./selectExistingProject.css";
+import "./SelectExistingProject.css";
 const SelectExistingProject = () => {
   //made a more dynamic array, i hope this is what you were talking aboutt
   const projects = [
