@@ -29,6 +29,8 @@ const Login = (props) => {
       setPasswordError('Please enter a password')
       return
     }
+
+    navigate('/project-list');
   }
 
   return (
@@ -37,7 +39,7 @@ const Login = (props) => {
         <div>Login</div>
       </div>
       <br />
-      <p>New User?<Link to="/signup">Register Here</Link></p>
+      <p>New User?<Link to="/register">Register Here</Link></p>
       <div className={'inputContainer'}>
         <input
           value={email}
