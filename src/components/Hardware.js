@@ -2,86 +2,142 @@ import React, { useEffect, useState } from 'react';
 import './Hardware.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert'
 
-function Hardware() {
+function Hardware({ projectId }) {
+  const [hardwareList, setHardwareList] = useState([]);
+  const [hardwareRequests, setHardwareRequests] = useState({});
+  const [error, setError] = useState('');
 
-  const [formData, setFormData] = useState({
-    projectId: '',
-    capacity: '',
-    availability: '',
-    request: ''
-  });
-    useEffect(()=>{
-        fetch('http://127.0.0.1:5000/hardware').then(res=>res.json()).then(data => {
-            console.log(data);
-            setFormData({
-                ...data
-            })
-        });
-    },[]);
+  useEffect(() => {
+    fetchHardwareData();
+  }, []);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+  const fetchHardwareData = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/get-hardware');
+      const data = await response.json();
+      setHardwareList(data);
+      const initialRequests = data.reduce((acc, hardware) => {
+        acc[hardware.hardware_id] = ''; // Initialize with empty string
+        return acc;
+      }, {});
+      setHardwareRequests(initialRequests);
+    } catch (err) {
+      console.error('Error fetching hardware data:', err);
+      setError('Failed to fetch hardware data');
+    }
   };
 
-  const checkIn = () => {
-    console.log(formData);
+  const handleCheckIn = async () => {
+    setError('');
+    const requestData = Object.keys(hardwareRequests)
+      .filter(hardware_id => hardwareRequests[hardware_id]) // Only include non-empty requests
+      .map(hardware_id => ({
+        hardware_id,
+        project_id: "1",
+        request: hardwareRequests[hardware_id]
+      }));
+
+    if (requestData.length === 0) {
+      setError('Please provide request quantities for at least one hardware item');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://127.0.0.1:5000/set-check-in', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+      });
+      const result = await response.json();
+      console.log("result", result);
+      if (response.ok) {
+        fetchHardwareData(); // Refresh hardware data
+        setError('');
+      } else {
+        fetchHardwareData();
+        setError(result.errors[0]);
+      }
+    } catch (err) {
+      console.error('Error during check-in:', err);
+      setError('Failed to check in hardware');
+    }
+  };
+
+  const handleCheckOut = async () => {
+    setError('');
+    const requestData = Object.keys(hardwareRequests)
+      .filter(hardware_id => hardwareRequests[hardware_id]) // Only include non-empty requests
+      .map(hardware_id => ({
+        hardware_id,
+        project_id: "1",
+        request: hardwareRequests[hardware_id]
+      }));
+
+    if (requestData.length === 0) {
+      setError('Please provide request quantities for at least one hardware item');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://127.0.0.1:5000/set-check-out', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+      });
+      const result = await response.json();
+      if (response.ok) {
+        fetchHardwareData(); // Refresh hardware data
+        setError('');
+      } else {
+        fetchHardwareData();
+        setError(result.errors[0]);
+      }
+    } catch (err) {
+      console.error('Error during check-out:', err);
+      setError('Failed to check out hardware');
+    }
+  };
+
+  const handleRequestChange = (hardware_id, value) => {
+    setHardwareRequests(prev => ({
+      ...prev,
+      [hardware_id]: value
+    }));
   };
 
   return (
     <div className="hardware-container">
       <h2>Resource Management</h2>
+      {error && <Alert variant="danger">{error}</Alert>}
       <Form className='form'>
-        <Form.Group className="mb-3" controlId="formProjectId">
-          <Form.Select
-            aria-label="Default select example"
-            name="projectId"
-            value={formData.projectId}
-            onChange={handleChange}>
-            <option>Select Project Id</option>
-            <option value="1">PID:1</option>
-            <option value="2">PID:2</option>
-            <option value="3">PID:3</option>
-          </Form.Select>
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="formCapacity">
-          <Form.Label>Capacity</Form.Label>
-          <Form.Control
-            type="text"
-            readOnly
-            placeholder="0"
-            name="capacity"
-            value={formData.capacity}
-            onChange={handleChange} />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formAvailability">
-          <Form.Label>Availability</Form.Label>
-          <Form.Control
-            type="text"
-            readOnly
-            placeholder="0"
-            name="availability"
-            value={formData.availability}
-            onChange={handleChange} />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formRequest">
-          <Form.Label>Request</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="0"
-            name="request"
-            value={formData.request}
-            onChange={handleChange} />
-        </Form.Group>
-        <Button className='m-2' variant="primary" type="button" onClick={checkIn}>
+        {hardwareList.map(hardware => (
+          <Form.Group key={hardware.hardware_id} className="mb-3">
+            <Form.Label>Hardware {hardware.hardware_id}</Form.Label>
+            <Form.Control
+              type="text"
+              readOnly
+              value={`Capacity: ${hardware.capacity}`} />
+            <Form.Control
+              type="text"
+              readOnly
+              value={`Availability: ${hardware.availability}`} />
+            <Form.Control
+              type="text"
+              placeholder="Enter request quantity"
+              value={hardwareRequests[hardware.hardware_id] || ''}
+              onChange={(e) => handleRequestChange(hardware.hardware_id, e.target.value)} />
+          </Form.Group>
+        ))}
+        <Button className='m-2' variant="primary" type="button" onClick={handleCheckIn}>
           Check In
         </Button>
-        <Button variant="primary" type="button">
+        <Button variant="primary" type="button" onClick={handleCheckOut}>
           Check Out
         </Button>
       </Form>
