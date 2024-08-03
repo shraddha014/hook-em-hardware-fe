@@ -2,17 +2,20 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import './login.css'
 
-const Login = (props) => {
+const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
+  const [loginError, setLoginError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate()
 
-  const onButtonClick = () => {
+  const onButtonClick = async () => {
     setEmailError('')
     setPasswordError('')
+    setLoginError('')
 
     // Check if the user has entered both fields correctly
     if ('' === email) {
@@ -29,6 +32,30 @@ const Login = (props) => {
       setPasswordError('Please enter a password')
       return
     }
+
+    setLoading(true)
+
+    try {
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      })
+
+      const result = await response.json()
+
+      if (response.ok) {
+        // Get only the username from the response
+        const { username } = result
+        navigate('/project-list', { state: { username } })
+      } else {
+        setLoginError(result.error || 'Login failed')
+      }
+    } catch (error) {
+      setLoginError('An error occurred while logging in')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -37,9 +64,10 @@ const Login = (props) => {
         <div>Login</div>
       </div>
       <br />
-      <p>New User?<Link to="/signup">Register Here</Link></p>
+      <p>New User?<Link to="/register">Register Here</Link></p>
       <div className={'inputContainer'}>
         <input
+          type="email"
           value={email}
           placeholder="Enter your email here"
           onChange={(ev) => setEmail(ev.target.value)}
@@ -50,6 +78,7 @@ const Login = (props) => {
       <br />
       <div className={'inputContainer'}>
         <input
+          type="password"
           value={password}
           placeholder="Enter your password here"
           onChange={(ev) => setPassword(ev.target.value)}
@@ -59,8 +88,15 @@ const Login = (props) => {
       </div>
       <br />
       <div className={'inputContainer'}>
-        <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Log in'} />
+        <input
+          className={'inputButton'}
+          type="button"
+          onClick={onButtonClick}
+          value={loading ? 'Logging in...' : 'Log in'}
+          disabled={loading}
+        />
       </div>
+      {loginError && <div className="errorLabel">{loginError}</div>}
     </div>
   )
 }
