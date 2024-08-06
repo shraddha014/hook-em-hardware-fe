@@ -1,15 +1,55 @@
 import React, { useState } from 'react';
 import './createNewProject.css';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateNewProject = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [projectId, setProjectId] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log({ name, description, projectId });
-    // Handle form submission
+  
+    try {
+      const res = await axios.post("/api/auth/register", { name, description, projectId });
+      if (res.status === 200) {
+        showToast("success", "Create project successful");
+        backtoExistingProject(); // Redirect on success
+      } else {
+        showToast("error", "There seems to be an Error");
+      }
+    } catch (error) {
+      showToast("error", error.response?.data || "There seems to be an Error");
+    }
+  };
+    
+  const backtoExistingProject = () => {
+    window.location.href = '/project-list';
+  };
+
+  const showToast = (type, message) => {
+    if (type === "success") {
+      toast.success(message, {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+      });
+    } else {
+      toast.error(message, {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+      });
+    }
   };
 
   return (
@@ -41,8 +81,13 @@ const CreateNewProject = () => {
         <button type="submit">Create</button>
       </form>
       <p className="link">
-        <a href="/project-list">Already have a project? Click here</a>
+        <a href="/project-list">
+          Already have a project? Click here
+        </a>
       </p>
+      <div className='centered'>
+        <ToastContainer />
+      </div>
     </div>
   );
 };
