@@ -15,7 +15,7 @@ function Hardware({ projectId }) {
 
   const fetchHardwareData = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/get-hardware');
+      const response = await fetch('https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/get-hardware');
       const data = await response.json();
       setHardwareList(data);
       const initialRequests = data.reduce((acc, hardware) => {
@@ -45,7 +45,7 @@ function Hardware({ projectId }) {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/set-check-in', {
+      const response = await fetch('https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/set-check-in', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -83,7 +83,7 @@ function Hardware({ projectId }) {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/set-check-out', {
+      const response = await fetch('https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/set-check-out', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
