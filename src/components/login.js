@@ -36,7 +36,7 @@ const Login = () => {
     setLoading(true)
 
     try {
-      const response = await fetch('/login', {
+      const response = await fetch('https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
