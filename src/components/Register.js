@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import "./register.css";
@@ -27,7 +26,7 @@ function Register() {
     event.preventDefault(); // Prevent default form submission behavior
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/register', {
+      const response = await fetch('https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -94,7 +93,3 @@ function Register() {
 }
 
 export default Register;
-
-
-
-
