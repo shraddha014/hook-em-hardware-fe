@@ -4,18 +4,41 @@ header {
   padding: 30px;
 }
 
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header-content h1 {
+  margin: 0;
+}
+
+.header-content h1:first-child {
+  margin-right: 100px; /* Adjust the space between the headings */
+}
+
+.main-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
 .button-container {
-  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
 }
+
 .project-item {
   display: flex;
   flex-direction: column;
   align-items: center; 
   margin-bottom: 1em;
 }
+
 .project-button {
   background-color: #e5731a;
   border: none;
@@ -44,4 +67,39 @@ header {
   color: #fff;
   margin: 5px 0 0 0;
   text-align: center;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  flex-direction: column;
+}
+
+.search-bar {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 200px;
+  transition: border-color 0.3s ease;
+}
+
+.search-bar:focus {
+  border-color: #e5731a;
+  outline: none;
+}
+
+.search-button {
+  padding: 5px 10px; /* Smaller padding for a smaller button */
+  font-size: 14px; /* Smaller font size */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.search-button:hover {
+  background-color: #0056b3;
+  
 }
