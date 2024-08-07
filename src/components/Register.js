@@ -39,7 +39,7 @@ function Register() {
 
       if (response.ok) {
         // Handle successful registration
-        navigate('/create-new-project'); // Navigate to another page upon success
+        navigate('/create-new-project', { state: { username: formData.username } }); // Navigate to another page upon success
       } else {
         // Handle errors (e.g., user already exists)
         alert(result.message || 'Registration failed');

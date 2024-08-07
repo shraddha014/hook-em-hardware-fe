@@ -1,20 +1,29 @@
-import React, { useState } from 'react';
-import './createNewProject.css';
-import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import "./createNewProject.css";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreateNewProject = () => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [projectId, setProjectId] = useState('');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { username } = location.state || {};
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [projectId, setProjectId] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log({ name, description, projectId });
-  
+
     try {
-      const res = await axios.post("/api/auth/register", { name, description, projectId });
+      const res = await axios.post("/api/auth/register", {
+        name: name,
+        description: description,
+        project_id: projectId,
+        username: username,
+      });
       if (res.status === 200) {
         showToast("success", "Create project successful");
         backtoExistingProject(); // Redirect on success
@@ -25,9 +34,9 @@ const CreateNewProject = () => {
       showToast("error", error.response?.data || "There seems to be an Error");
     }
   };
-    
+
   const backtoExistingProject = () => {
-    window.location.href = '/project-list';
+    navigate("/hardware", { state: { projectId } });
   };
 
   const showToast = (type, message) => {
@@ -81,11 +90,11 @@ const CreateNewProject = () => {
         <button type="submit">Create</button>
       </form>
       <p className="link">
-        <a href="/project-list">
+        <Link to="/project-list" state={{ username: username }}>
           Already have a project? Click here
-        </a>
+        </Link>
       </p>
-      <div className='centered'>
+      <div className="centered">
         <ToastContainer />
       </div>
     </div>

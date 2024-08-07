@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import "./SelectExistingProject.css";
-import Alert from 'react-bootstrap/Alert'
+import Alert from "react-bootstrap/Alert";
 
-const SelectExistingProject = ({ username }) => {
+const SelectExistingProject = () => {
+  const location = useLocation();
+  const { username } = location.state || {};
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const navigateToProject = (projectId) => {
-    navigate('/hardware', { state: { projectId } });
+    navigate("/hardware", { state: { projectId } });
   };
 
   const handleButtonClick = () => {
@@ -26,65 +28,76 @@ const SelectExistingProject = ({ username }) => {
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/get-user-associated-project-list?username=karen`);
+      const response = await fetch(
+        `https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/api/get-user-associated-project-list?username=${username}`
+      );
       const data = await response.json();
       if (Array.isArray(data)) {
         setProjects(data);
       } else {
-        console.error('Expected an array but got:', data);
+        console.error("Expected an array but got:", data);
         setProjects([]);
-        setError('Error setting project to user: ' + (error.message || 'Unknown error'));
-
+        setError(
+          "Error setting project to user: " + (error.message || "Unknown error")
+        );
       }
     } catch (error) {
-      console.error('Error fetching projects:', error);
+      console.error("Error fetching projects:", error);
       setProjects([]);
-      setError('Error setting project to user: ' + (error.message || 'Unknown error'));
-
+      setError(
+        "Error setting project to user: " + (error.message || "Unknown error")
+      );
     }
   };
 
   const fetchProjectById = async (projectId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/get_project_from_project_id?project_id=${projectId}`);
+      const response = await fetch(
+        `http://127.0.0.1:5000/api/get_project_from_project_id?project_id=${projectId}`
+      );
       const data = await response.json();
       if (data && data.project_id) {
         setSelectedProject(data); // Assuming data is a single project object
       } else {
-        console.error('Expected a project object but got:', data);
+        console.error("Expected a project object but got:", data);
         setSelectedProject(null);
       }
     } catch (error) {
-      console.error('Error fetching project:', error);
+      console.error("Error fetching project:", error);
       setSelectedProject(null);
-      setError('You are already a part of this project. Try using different project id');
-
+      setError(
+        "You are already a part of this project. Try using different project id"
+      );
     }
   };
 
   const setProjectToUser = async (username, projectId) => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/set_project_to_user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: 'karen',
-          project_id: projectId,
-        }),
-      });
+      const response = await fetch(
+        "http://127.0.0.1:5000/set_project_to_user",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: "karen",
+            project_id: projectId,
+          }),
+        }
+      );
       const data = await response.json();
       if (response.ok) {
-        console.log('Project added to user:', data);
+        console.log("Project added to user:", data);
         // Handle success
       } else {
-        console.error('Error adding project to user:', data);
+        console.error("Error adding project to user:", data);
       }
     } catch (error) {
-      console.error('Error setting project to user:', error);
-      setError('Error setting project to user: ' + (error.message || 'Unknown error'));
-
+      console.error("Error setting project to user:", error);
+      setError(
+        "Error setting project to user: " + (error.message || "Unknown error")
+      );
     }
   };
 
@@ -92,7 +105,7 @@ const SelectExistingProject = ({ username }) => {
     fetchProjects();
   }, [username]);
 
-  const filteredProjects = projects.filter(project => 
+  const filteredProjects = projects.filter((project) =>
     project.project_id.includes(searchQuery)
   );
 
@@ -103,7 +116,6 @@ const SelectExistingProject = ({ username }) => {
         <h1>Your Current Projects</h1>
         <h1>Join a Project</h1>
       </div>
-      
 
       <div className="main-content">
         <div className="button-container">
@@ -119,10 +131,12 @@ const SelectExistingProject = ({ username }) => {
             </div>
           ))}
           <p className="link">
-            <a href="/create-new-project">Create New Project</a>
+            <Link to="/create-new-project" state={{ username: username }}>
+              Create New Project
+            </Link>
           </p>
         </div>
-        
+
         <div className="search-container">
           <div>
             <input
@@ -139,13 +153,15 @@ const SelectExistingProject = ({ username }) => {
 
           {selectedProject ? (
             <div key={selectedProject.project_id} className="project-item">
-              <div
-                className="project-button"
-              >
+              <div className="project-button">
                 {`Project ${selectedProject.project_id}`}
                 <p>{selectedProject.project_description}</p>
               </div>
-              <button onClick={() => setProjectToUser(username, selectedProject.project_id)}>
+              <button
+                onClick={() =>
+                  setProjectToUser(username, selectedProject.project_id)
+                }
+              >
                 Add to User
               </button>
             </div>
