@@ -17,7 +17,7 @@ const CreateNewProject = () => {
     console.log({ name, description, projectId });
 
     try {
-      const response = await fetch("/api/auth/create-new-project", {
+      const response = await fetch(`https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/api/create-project`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
