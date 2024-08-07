@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import "./createNewProject.css";
-import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -18,25 +17,33 @@ const CreateNewProject = () => {
     console.log({ name, description, projectId });
 
     try {
-      const res = await axios.post("/api/auth/register", {
-        name: name,
-        description: description,
-        project_id: projectId,
-        username: username,
+      const response = await fetch("/api/auth/create-new-project", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name,
+          description: description,
+          project_id: projectId,
+          username: username,
+        }),
       });
-      if (res.status === 200) {
+
+      if (response.ok) {
         showToast("success", "Create project successful");
         backtoExistingProject(); // Redirect on success
       } else {
-        showToast("error", "There seems to be an Error");
+        const errorData = await response.json();
+        showToast("error", errorData.message || "There seems to be an Error");
       }
     } catch (error) {
-      showToast("error", error.response?.data || "There seems to be an Error");
+      showToast("error", "There seems to be an Error");
     }
   };
 
   const backtoExistingProject = () => {
-    navigate("/hardware", { state: { projectId } });
+    navigate("/backtoExistingProject", { state: { projectId } });
   };
 
   const showToast = (type, message) => {
