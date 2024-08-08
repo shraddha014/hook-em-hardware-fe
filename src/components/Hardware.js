@@ -50,7 +50,7 @@ function Hardware() {
       );
       return;
     }
-
+    console.log("request", requestData);
     try {
       const response = await fetch(
         "https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/set-check-in",
@@ -69,7 +69,7 @@ function Hardware() {
         setError("");
       } else {
         fetchHardwareData();
-        setError(result.errors[0]);
+        setError(result.errors);
       }
     } catch (err) {
       console.error("Error during check-in:", err);

@@ -12,8 +12,8 @@ const SelectExistingProject = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [error, setError] = useState("");
 
-  const navigateToProject = (projectId) => {
-    navigate("/hardware", { state: { projectId } });
+  const navigateToProject = (project_id) => {
+    navigate("/hardware", { state: { project_id } });
   };
 
   const handleButtonClick = () => {
@@ -50,10 +50,10 @@ const SelectExistingProject = () => {
     }
   };
 
-  const fetchProjectById = async (projectId) => {
+  const fetchProjectById = async (project_id) => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:5000/api/get_project_from_project_id?project_id=${projectId}`
+        `https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/api/get_project_from_project_id?project_id=${project_id}`
       );
       const data = await response.json();
       if (data && data.project_id) {
@@ -71,18 +71,18 @@ const SelectExistingProject = () => {
     }
   };
 
-  const setProjectToUser = async (username, projectId) => {
+  const setProjectToUser = async (username, project_id) => {
     try {
       const response = await fetch(
-        "http://127.0.0.1:5000/set_project_to_user",
+        "https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/set_project_to_user",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            username: "karen",
-            project_id: projectId,
+            username: username,
+            project_id: project_id,
           }),
         }
       );

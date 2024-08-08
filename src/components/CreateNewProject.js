@@ -10,25 +10,28 @@ const CreateNewProject = () => {
   const { username } = location.state || {};
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [projectId, setProjectId] = useState("");
+  const [project_id, setproject_id] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ name, description, projectId });
+    console.log({ name, description, project_id });
 
     try {
-      const response = await fetch(`https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/api/create-project`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name,
-          description: description,
-          project_id: projectId,
-          username: username,
-        }),
-      });
+      const response = await fetch(
+        `https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/api/create-project`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: name,
+            description: description,
+            project_id: project_id,
+            username: username,
+          }),
+        }
+      );
 
       if (response.ok) {
         showToast("success", "Create project successful");
@@ -43,7 +46,9 @@ const CreateNewProject = () => {
   };
 
   const backtoExistingProject = () => {
-    navigate("/backtoExistingProject", { state: { projectId } });
+    navigate("/project-list", {
+      state: { project_id: project_id, username: username },
+    });
   };
 
   const showToast = (type, message) => {
@@ -87,12 +92,12 @@ const CreateNewProject = () => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <label htmlFor="projectId">ProjectID</label>
+        <label htmlFor="project_id">project_id</label>
         <input
           type="text"
-          id="projectId"
-          value={projectId}
-          onChange={(e) => setProjectId(e.target.value)}
+          id="project_id"
+          value={project_id}
+          onChange={(e) => setproject_id(e.target.value)}
         />
         <button type="submit">Create</button>
       </form>
