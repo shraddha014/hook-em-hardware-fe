@@ -83,7 +83,7 @@ function Hardware() {
       .filter((hardware_id) => hardwareRequests[hardware_id]) // Only include non-empty requests
       .map((hardware_id) => ({
         hardware_id,
-        project_id: "1",
+        project_id: project_id,
         request: hardwareRequests[hardware_id],
       }));
 
