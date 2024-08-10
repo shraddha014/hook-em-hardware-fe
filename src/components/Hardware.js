@@ -67,10 +67,8 @@ function Hardware() {
       const result = await response.json();
       console.log("result", result);
       if (response.ok) {
-        fetchHardwareData(); // Refresh hardware data
         setError("");
       } else {
-        fetchHardwareData();
         setError(result.errors);
       }
     } catch (err) {
@@ -109,10 +107,8 @@ function Hardware() {
       );
       const result = await response.json();
       if (response.ok) {
-        fetchHardwareData(); // Refresh hardware data
         setError("");
       } else {
-        fetchHardwareData();
         setError(result.errors[0]);
       }
     } catch (err) {
