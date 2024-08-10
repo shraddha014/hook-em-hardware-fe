@@ -56,25 +56,33 @@ const SelectExistingProject = () => {
   };
 
   const fetchProjectById = async (project_id) => {
-    try {
-      const response = await fetch(
-        `https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/api/get_project_from_project_id?project_id=${project_id}`
-      );
-      const data = await response.json();
-      if (data && data.project_id) {
-        setSelectedProject(data); // Assuming data is a single project object
-        setError("");
-      } else {
-        console.error("Expected a project object but got:", data);
+    const isAlreadyInProject = projects.some(
+      (project) => project.project_id === project_id
+    );
+    if (isAlreadyInProject) {
+      setError("You are already part of this project.");
+      return;
+    } else {
+      try {
+        const response = await fetch(
+          `https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/api/get_project_from_project_id?project_id=${project_id}`
+        );
+        const data = await response.json();
+        if (data && data.project_id) {
+          setSelectedProject(data); // Assuming data is a single project object
+          setError("");
+        } else {
+          console.error("Expected a project object but got:", data);
+          setSelectedProject(null);
+          setError("Error: ", data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching project:", error);
         setSelectedProject(null);
-        setError("Error: ", data.message);
+        setError(
+          "You are already a part of this project. Try using different project id"
+        );
       }
-    } catch (error) {
-      console.error("Error fetching project:", error);
-      setSelectedProject(null);
-      setError(
-        "You are already a part of this project. Try using different project id"
-      );
     }
   };
 
