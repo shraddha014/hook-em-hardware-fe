@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import "./createNewProject.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -7,10 +7,15 @@ import "react-toastify/dist/ReactToastify.css";
 const CreateNewProject = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { username } = location.state || {};
+  const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [project_id, setproject_id] = useState("");
+
+  useEffect(() => {
+    const username = localStorage.getItem("username");
+    if (username) setUsername(username);
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,9 +51,7 @@ const CreateNewProject = () => {
   };
 
   const backtoExistingProject = () => {
-    navigate("/project-list", {
-      state: { project_id: project_id, username: username },
-    });
+    navigate("/project-list");
   };
 
   const showToast = (type, message) => {
@@ -102,9 +105,7 @@ const CreateNewProject = () => {
         <button type="submit">Create</button>
       </form>
       <p className="link">
-        <Link to="/project-list" state={{ username: username }}>
-          Already have a project? Click here
-        </Link>
+        <Link to="/project-list">Already have a project? Click here</Link>
       </p>
       <div className="centered">
         <ToastContainer />

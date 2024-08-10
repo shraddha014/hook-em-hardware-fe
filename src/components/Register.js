@@ -1,23 +1,23 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import "./register.css";
 
-function Register() {
+function Register({ onLogin }) {
   const navigate = useNavigate();
 
   // State for form input values
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: ''
+    username: "",
+    email: "",
+    password: "",
   });
 
   // Handle form input changes
   const handleChange = (event) => {
     const { id, value } = event.target;
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
-      [id]: value
+      [id]: value,
     }));
   };
 
@@ -26,28 +26,31 @@ function Register() {
     event.preventDefault(); // Prevent default form submission behavior
 
     try {
-      const response = await fetch('https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const result = await response.json();
       console.log("result", result);
 
       if (response.ok) {
-        // Handle successful registration
-        navigate('/create-new-project', { state: { username: formData.username } }); // Navigate to another page upon success
+        onLogin(result.username);
+        navigate("/create-new-project");
       } else {
         // Handle errors (e.g., user already exists)
-        alert(result.message || 'Registration failed');
+        alert(result.message || "Registration failed");
       }
     } catch (error) {
       // Handle network errors
-      console.error('Error:', error);
-      alert('An error occurred. Please try again.');
+      console.error("Error:", error);
+      alert("An error occurred. Please try again.");
     }
   };
 
@@ -86,7 +89,9 @@ function Register() {
             onChange={handleChange}
           />
         </div>
-        <button type="submit" className="submit-button">Register</button>
+        <button type="submit" className="submit-button">
+          Register
+        </button>
       </form>
     </div>
   );

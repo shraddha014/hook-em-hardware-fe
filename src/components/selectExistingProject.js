@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./SelectExistingProject.css";
 import Alert from "react-bootstrap/Alert";
 
 const SelectExistingProject = () => {
-  const location = useLocation();
-  const { username } = location.state || {};
+  const [username, setUsername] = useState("");
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    const username = localStorage.getItem("username");
+    if (username) {
+      setUsername(username);
+      fetchProjects();
+    }
+  }, [username]);
+
   const navigateToProject = (project_id) => {
-    navigate("/hardware", { state: { project_id } });
+    localStorage.setItem("project_id", project_id);
+    navigate("/hardware");
   };
 
   const handleButtonClick = () => {
@@ -34,19 +42,16 @@ const SelectExistingProject = () => {
       const data = await response.json();
       if (Array.isArray(data)) {
         setProjects(data);
+        setError("");
       } else {
         console.error("Expected an array but got:", data);
         setProjects([]);
-        setError(
-          "Error setting project to user: " + (error.message || "Unknown error")
-        );
+        setError("Error:" + (data.message || "Unknown error"));
       }
     } catch (error) {
       console.error("Error fetching projects:", error);
       setProjects([]);
-      setError(
-        "Error setting project to user: " + (error.message || "Unknown error")
-      );
+      setError("Error:" + (error.message || "Unknown error"));
     }
   };
 
@@ -58,9 +63,11 @@ const SelectExistingProject = () => {
       const data = await response.json();
       if (data && data.project_id) {
         setSelectedProject(data); // Assuming data is a single project object
+        setError("");
       } else {
         console.error("Expected a project object but got:", data);
         setSelectedProject(null);
+        setError("Error: ", data.message);
       }
     } catch (error) {
       console.error("Error fetching project:", error);
@@ -88,26 +95,18 @@ const SelectExistingProject = () => {
       );
       const data = await response.json();
       if (response.ok) {
-        console.log("Project added to user:", data);
-        // Handle success
+        setError("");
+        fetchProjects();
+        setSelectedProject(null);
       } else {
         console.error("Error adding project to user:", data);
+        setError("Error: " + data.message);
       }
     } catch (error) {
       console.error("Error setting project to user:", error);
-      setError(
-        "Error setting project to user: " + (error.message || "Unknown error")
-      );
+      setError("Error:" + (error.message || "Unknown error"));
     }
   };
-
-  useEffect(() => {
-    fetchProjects();
-  }, [username]);
-
-  const filteredProjects = projects.filter((project) =>
-    project.project_id.includes(searchQuery)
-  );
 
   return (
     <header>
@@ -119,7 +118,7 @@ const SelectExistingProject = () => {
 
       <div className="main-content">
         <div className="button-container">
-          {filteredProjects.map((project) => (
+          {projects.map((project) => (
             <div key={project.project_id} className="project-item">
               <div
                 className="project-button"
@@ -131,9 +130,7 @@ const SelectExistingProject = () => {
             </div>
           ))}
           <p className="link">
-            <Link to="/create-new-project" state={{ username: username }}>
-              Create New Project
-            </Link>
+            <Link to="/create-new-project">Create New Project</Link>
           </p>
         </div>
 
