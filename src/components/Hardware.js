@@ -7,12 +7,14 @@ import Alert from "react-bootstrap/Alert";
 
 function Hardware() {
   const location = useLocation();
-  const { project_id } = location.state || {};
+  const [project_id, setproject_id] = useState("");
   const [hardwareList, setHardwareList] = useState([]);
   const [hardwareRequests, setHardwareRequests] = useState({});
   const [error, setError] = useState("");
 
   useEffect(() => {
+    const project_id = localStorage.getItem("project_id");
+    if (project_id) setproject_id(project_id);
     fetchHardwareData();
   }, []);
 
