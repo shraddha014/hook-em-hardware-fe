@@ -129,6 +129,7 @@ function Hardware() {
   return (
     <div className="hardware-container">
       <h2>Resource Management</h2>
+      <h4>Project No: {project_id}</h4>
       {error && <Alert variant="danger">{error}</Alert>}
       <Form className="form">
         {hardwareList.map((hardware) => (
