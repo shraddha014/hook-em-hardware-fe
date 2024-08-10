@@ -68,6 +68,7 @@ function Hardware() {
       console.log("result", result);
       if (response.ok) {
         setError("");
+        fetchHardwareData();
       } else {
         setError(result.errors);
       }
@@ -108,8 +109,9 @@ function Hardware() {
       const result = await response.json();
       if (response.ok) {
         setError("");
+        fetchHardwareData();
       } else {
-        setError(result.errors[0]);
+        setError(result.errors);
       }
     } catch (err) {
       console.error("Error during check-out:", err);
