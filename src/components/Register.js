@@ -38,10 +38,8 @@ function Register({ onLogin }) {
       );
 
       const result = await response.json();
-      console.log("result", result);
-
       if (response.ok) {
-        onLogin(result.username);
+        onLogin(formData.username);
         navigate("/create-new-project");
       } else {
         // Handle errors (e.g., user already exists)
