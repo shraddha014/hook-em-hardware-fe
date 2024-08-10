@@ -13,49 +13,50 @@ const Login = () => {
   const navigate = useNavigate()
 
   const onButtonClick = async () => {
-    setEmailError('')
-    setPasswordError('')
-    setLoginError('')
-
-    // Check if the user has entered both fields correctly
+    setEmailError('');
+    setPasswordError('');
+    setLoginError('');
+  
+  
     if ('' === email) {
-      setEmailError('Please enter your email')
-      return
+      setEmailError('Please enter your email');
+      return;
     }
-
+  
     if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-      setEmailError('Please enter a valid email')
-      return
+      setEmailError('Please enter a valid email');
+      return;
     }
-
+  
     if ('' === password) {
-      setPasswordError('Please enter a password')
-      return
+      setPasswordError('Please enter a password');
+      return;
     }
-
-    setLoading(true)
-
+  
+    setLoading(true);
+  
     try {
       const response = await fetch('https://hook-em-hardware-be-b81aa6e7bd7f.herokuapp.com/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
-      })
-
-      const result = await response.json()
-
+      });
+  
+      const result = await response.json();
+  
       if (response.ok) {
-        // Get only the username from the response
-        const { username } = result
-        navigate('/project-list', { state: { username } })
+        // Store username in localStorage
+        localStorage.setItem('username', result.username); // Save username to localStorage
+        navigate('/project-list', { state: { username: result.username } });
       } else {
-        setLoginError(result.error || 'Login failed')
+        setLoginError(result.error || 'Login failed');
       }
     } catch (error) {
-      setLoginError('An error occurred while logging in')
+      setLoginError('An error occurred while logging in');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
+  
   }
 
   return (
