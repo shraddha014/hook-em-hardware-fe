@@ -1,6 +1,6 @@
 # hook-em-hardware-fe
 
-Here’s a README file for the front end of your project, Hook Em Hardware:
+Here’s a README file for the front end of our project, Hook Em Hardware:
 Welcome to the Hook Em Hardware project! This is the frontend repository for our hardware management system. The website allows users to create accounts, join multiple projects, and manage hardware checkouts and check-ins seamlessly.
 Hook'em Hardware is one stop hardware shop
 Here is our Project Plan: https://docs.google.com/document/d/1kmE1pjdTlKd4LvHaeC_ubv213oRRwGWsRQKqEAKpi_s/edit?usp=sharing
